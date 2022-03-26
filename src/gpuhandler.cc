@@ -403,10 +403,10 @@ void GPU_handler::slot_start_kernel (frac_desc *fd, int generation, int max_nwor
 			break;
 		}
 		if (ms < 500 || ms > 1000) {
-			iter_scale_factor = std::max (0.1, std::min (iter_scale_factor * 500. / ms, 100.));
+			iter_scale_factor = std::max (0.125, std::min (iter_scale_factor * 500. / ms, 100.));
 		}
 		if (last_n_completed == 0 && fd->n_completed != 0)
-			iter_scale_factor /= fd->pixel_step * fd->pixel_step;
+			iter_scale_factor = std::max (0.25, iter_scale_factor / (fd->pixel_step * fd->pixel_step));
 	}
 	if (batch)
 		done_sem.release ();

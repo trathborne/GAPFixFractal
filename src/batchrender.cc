@@ -46,9 +46,9 @@ void BatchRenderDialog::accept ()
 	if (ui->maxiterCheckBox->isChecked ()) {
 		bool ok;
 		m_maxiter = ui->maxiterEdit->text ().toInt (&ok);
-		if (!ok || m_maxiter < 100 || m_maxiter > 10000000) {
+		if (!ok || m_maxiter < 100 || m_maxiter > 2000000000) {
 			QMessageBox::warning (this, tr ("Invalid number for maximum iterations"),
-					      tr ("Please enter a number between 100 and 10000000."));
+						tr ("Please enter a valid number of iterations 100..2000000000"));
 			return;
 		}
 

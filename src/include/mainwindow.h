@@ -83,8 +83,8 @@ class MainWindow: public QMainWindow
 	bool m_resized_fractal = false, m_resized_preview = false;
 
 	static constexpr int max_nwords = 16;
-	static constexpr int iter_steps = 2000;
-	static constexpr int default_maxiter = 500000;
+	static constexpr int iter_steps = 4096;
+	static constexpr int default_maxiter = 1048576;
 
 	int m_cur_maxiter = default_maxiter;
 	formula m_formula = formula::standard;

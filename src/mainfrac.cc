@@ -174,7 +174,7 @@ MaxiterDialog::MaxiterDialog (QMainWindow *w, uint32_t cur)
 {
 	ui->setupUi (this);
 	ui->lineEdit->setText (QString::number (cur));
-	ui->lineEdit->setValidator (new QIntValidator (40, 100000000, this));
+	ui->lineEdit->setValidator (new QIntValidator (100, 2000000000, this));
 	disconnect (ui->buttonBox->button (QDialogButtonBox::Ok) ,&QPushButton::clicked, nullptr, nullptr);
 	connect (ui->buttonBox->button (QDialogButtonBox::Ok), &QPushButton::clicked,
 		 [this] (bool)
@@ -182,8 +182,8 @@ MaxiterDialog::MaxiterDialog (QMainWindow *w, uint32_t cur)
 			 QString r = result ();
 			 int v;
 			 if (ui->lineEdit->validator ()->validate (r, v) != QValidator::Acceptable) {
-				 QMessageBox::warning (this, tr ("Invalid number specified"),
-						       tr ("Please enter a valid number of iterations (40...100000000)"));
+				 QMessageBox::warning (this, tr ("Invalid number for maximum iterations"),
+						       tr ("Please enter a valid number of iterations 100..2000000000"));
 				 return;
 			 }
 			 QDialog::accept ();
@@ -1233,7 +1233,7 @@ void MainWindow::fractal_mouse_event (QMouseEvent *e)
 		abort_computation ();
 		m_renderer->abort_render.store (true);
 		fd.bounds_w = fd.bounds_h = 0;
-		fd.width = div1 (mul1 (fd.width, 2), 5);
+		fd.width = div1 (mul1 (fd.width, 10), ui->zoomSpinBox->value () * 10);
 		autoprec (fd);
 		m_reinit_render = true;
 		restart_computation ();
@@ -2224,6 +2224,8 @@ void MainWindow::slot_batchrender (bool)
 		progress += pro_step;
 	}
 
+	setWindowTitle(QString(PACKAGE) + " - batch render complete");
+
 	m_paused = old_paused;
 	m_recompile = true;
 	restart_computation ();
@@ -2353,7 +2355,7 @@ MainWindow::MainWindow (QDataStream *init_file)
 	ui->action_AngleColour->setChecked (false);
 	ui->action_AngleNone->setChecked (true);
 	ui->action_BinInvert->setChecked (true);
-	ui->action_AimAssist->setChecked (true);
+	ui->action_AimAssist->setChecked (false);
 	ui->action_Shift100->setChecked (true);
 	ui->action_NFactor4->setChecked (true);
 	ui->action_StructDark->setChecked (true);
